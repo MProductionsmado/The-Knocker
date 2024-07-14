@@ -54,29 +54,31 @@ public class SpawnknockerProcedure {
 							_ent.getName().getString(), _ent.getDisplayName(), _ent.level.getServer(), _ent), "spreadplayers ~ ~ 0 50 false @e[type=the_knocker:knockerstalklooked,limit=1]");
 				}
 			}
-			if (knocker instanceof LivingEntity _entity) {
-				ItemStack _setstack = new ItemStack(Blocks.SOUL_TORCH);
-				_setstack.setCount(1);
-				_entity.setItemInHand(InteractionHand.MAIN_HAND, _setstack);
-				if (_entity instanceof Player _player)
-					_player.getInventory().setChanged();
-			}
-			{
-				BlockPos _bp = new BlockPos(knocker.getX(), knocker.getY() + 1, knocker.getZ());
-				BlockState _bs = Blocks.LIGHT.defaultBlockState();
-				BlockState _bso = world.getBlockState(_bp);
-				for (Map.Entry<Property<?>, Comparable<?>> entry : _bso.getValues().entrySet()) {
-					Property _property = _bs.getBlock().getStateDefinition().getProperty(entry.getKey().getName());
-					if (_property != null && _bs.getValue(_property) != null)
-						try {
-							_bs = _bs.setValue(_property, (Comparable) entry.getValue());
-						} catch (Exception e) {
-						}
+			if (knocker != null) {
+				if (knocker instanceof LivingEntity _entity) {
+					ItemStack _setstack = new ItemStack(Blocks.SOUL_TORCH);
+					_setstack.setCount(1);
+					_entity.setItemInHand(InteractionHand.MAIN_HAND, _setstack);
+					if (_entity instanceof Player _player)
+						_player.getInventory().setChanged();
 				}
-				world.setBlock(_bp, _bs, 3);
-			}
-			if (knocker instanceof KnockerstalklookedEntity _datEntSetL)
+				{
+					BlockPos _bp = new BlockPos(knocker.getX(), knocker.getY() + 1, knocker.getZ());
+					BlockState _bs = Blocks.LIGHT.defaultBlockState();
+					BlockState _bso = world.getBlockState(_bp);
+					for (Map.Entry<Property<?>, Comparable<?>> entry : _bso.getValues().entrySet()) {
+						Property _property = _bs.getBlock().getStateDefinition().getProperty(entry.getKey().getName());
+						if (_property != null && _bs.getValue(_property) != null)
+							try {
+								_bs = _bs.setValue(_property, (Comparable) entry.getValue());
+							} catch (Exception e) {
+							}
+					}
+					world.setBlock(_bp, _bs, 3);
+				}
+				if (knocker instanceof KnockerstalklookedEntity _datEntSetL)
 				_datEntSetL.getEntityData().set(KnockerstalklookedEntity.DATA_torch_event, true);
+			}
 		} else {
 			if (world instanceof ServerLevel _level) {
 				Entity entityToSpawn = new KnockerEntity(TheKnockerModEntities.KNOCKER.get(), _level);
